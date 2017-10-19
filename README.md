@@ -305,7 +305,7 @@ da_foreach(darr, iter)
 ----
 
 ## String Specialization
-The `dstring.h` header file contains special functions for creating and manipulating dstrings (`darray(char)`). See `dstring.md` for the full dstring API.
+The darray library contains special functions for creating and manipulating dstrings (`darray(char)`). See `dstring.md` for the full dstring API.
 
 ## License
 MIT (contributers welcome)
