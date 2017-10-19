@@ -3,7 +3,6 @@
 #endif
 #include <EMUtest.h>
 #include "../darray.h"
-#include "../dstring.h"
 
 #define INITIAL_NUM_ELEMS 5
 #define RESIZE_NUM_ELEMS 100

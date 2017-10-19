@@ -36,8 +36,6 @@
 ## Introduction
 Character arrays are by far the most common array type in C. Many functions in the C standard library like `strcmp` and `printf` will work exactly the same with `darray(char)` as built-in cstrings, but some functions such as `strcpy` and `sprintf` will "break" character darrays by desynching the length property of the darray from the actual length of the string. The dstring extension to the darray library was created to prevent these issues. A dstring is written as `darray(char)` and refered to as such in all documentation.
 
-By default dstrings are not included by `darray.h`. `#include <darray/dstring.h>` to access dstring function declarations.
-
 Generally speaking, if you are using dstrings, you should prefer the functions in this library over the C standard library when possible.
 
 ## API
