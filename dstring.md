@@ -17,6 +17,7 @@
     + [Dstring Data](#dstring-data)
         + [dstr_length](#dstr_length)
     + [Concatination](#concatination)
+        + [dstr_concat_char](#dstr_concat_char)
         + [dstr_concat_cstr](#dstr_concat_cstr)
         + [dstr_concat_dstr](#dstr_concat_dstr)
     + [Comparison](#comparison)
@@ -130,6 +131,15 @@ size_t dstr_length(const darray(char) dstr);
 ----
 
 ### Concatination
+
+#### dstr_concat_char
+Append character `c` to dstring `dest`.
+
+Returns a pointer to the new location of the dstring upon successful function completion. If `dstr_concat_char` returns `NULL`, reallocation failed and `dstr` is left untouched.
+```C
+darray(char) dstr_concat_char(darray(char) dest, char c);
+```
+Like `da_concat` references to `dest` may be invalidated across the function call. Use the return value of `dstr_concat_char` as truth for the location of `dest` after function completion.
 
 #### dstr_concat_cstr
 Append `src` to dstring `dest`. `src` may also be a dstring.

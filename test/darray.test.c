@@ -778,6 +778,19 @@ EMU_TEST(dstr_length)
     EMU_END_TEST();
 }
 
+EMU_TEST(dstr_concat_char)
+{
+    char* dstr = dstr_alloc_from_cstr(TEST_STR0);
+    dstr = dstr_concat_char(dstr, 'A');
+    EMU_REQUIRE_NOT_NULL(dstr);
+    EMU_REQUIRE_EQ_UINT(strlen(dstr), strlen(TEST_STR0)+1);
+    char cmpstr[100] = TEST_STR0;
+    strcat(cmpstr, "A");
+    EMU_REQUIRE_STREQ(dstr, cmpstr);
+    dstr_free(dstr);
+    EMU_END_TEST();
+}
+
 EMU_TEST(dstr_concat_cstr)
 {
     char* dstr = dstr_alloc_from_cstr(TEST_STR0);
@@ -804,6 +817,7 @@ EMU_TEST(dstr_concat_dstr)
 
 EMU_GROUP(dstr_concat_functions)
 {
+    EMU_ADD(dstr_concat_char);
     EMU_ADD(dstr_concat_cstr);
     EMU_ADD(dstr_concat_dstr);
     EMU_END_GROUP();

@@ -436,6 +436,21 @@ darray(char) dstr_reassign_from_format(darray(char) allocated_dstr,
 size_t dstr_length(const darray(char) dstr);
 
 /**@function
+ * @brief Append character `c` to dstring `dest`.
+ *
+ * @param dest : Target dstring that will be appended to. Like `da_concat`
+ *  references to `dest` may be invalidated across the function call. Use the
+ *  return value of `dstr_concat_char` as truth for the location of `dest` after
+ *  function completion.
+ * @param c : character to append to `dest`.
+ *
+ * @return Pointer to the new location of the dstring upon successful function
+ *  completion. If `dstr_concat_char` returns `NULL`, reallocation failed and
+ *  `dstr` is left untouched.
+ */
+darray(char) dstr_concat_char(darray(char) dest, char c) DA_WARN_UNUSED_RESULT;
+
+/**@function
  * @brief Append `src` to dstring `dest`. `src` may also be a dstring.
  *
  * @param dest : Target dstring that will be appended to. Like `da_concat`
@@ -457,7 +472,7 @@ darray(char) dstr_concat_cstr(darray(char) dest, const char* src)
  *
  * @param dest : Target dstring that will be appended to. Like `da_concat`
  *  references to `dest` may be invalidated across the function call. Use the
- *  return value of `dstr_concat_cstr` as truth for the location of `dest` after
+ *  return value of `dstr_concat_dstr` as truth for the location of `dest` after
  *  function completion.
  * @param src : dstring to append to `dest`.
  */

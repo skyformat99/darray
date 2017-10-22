@@ -249,6 +249,11 @@ size_t dstr_length(const darray(char) dstr)
     return da_length(dstr)-1;
 }
 
+darray(char) dstr_concat_char(darray(char) dest, char c)
+{
+    return dest = da_insert(dest, da_length(dest)-1, c);
+}
+
 darray(char) dstr_concat_cstr(darray(char) dest, const char* src)
 {
     size_t dest_strlen = dstr_length(dest);
