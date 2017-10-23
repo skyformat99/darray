@@ -609,9 +609,9 @@ EMU_TEST(dstr_alloc_empty__and__dstr_free);
     EMU_END_TEST();
 }
 
-EMU_TEST(dstr_alloc_from_cstr__and__dstr_free);
+EMU_TEST(dstr_alloc_cstr__and__dstr_free);
 {
-    char* dstr = dstr_alloc_from_cstr(EMPTY_STR);
+    char* dstr = dstr_alloc_cstr(EMPTY_STR);
     EMU_REQUIRE_NOT_NULL(dstr);
     EMU_REQUIRE_GE_UINT(da_capacity(dstr), da_length(dstr));
     EMU_REQUIRE_EQ_UINT(strlen(dstr), 0);
@@ -619,7 +619,7 @@ EMU_TEST(dstr_alloc_from_cstr__and__dstr_free);
     EMU_REQUIRE_STREQ(dstr, EMPTY_STR);
     dstr_free(dstr);
 
-    dstr = dstr_alloc_from_cstr(TEST_STR0);
+    dstr = dstr_alloc_cstr(TEST_STR0);
     EMU_REQUIRE_NOT_NULL(dstr);
     EMU_REQUIRE_GE_UINT(da_capacity(dstr), da_length(dstr));
     EMU_REQUIRE_EQ_UINT(strlen(dstr), strlen(TEST_STR0));
@@ -627,7 +627,7 @@ EMU_TEST(dstr_alloc_from_cstr__and__dstr_free);
     EMU_REQUIRE_STREQ(dstr, TEST_STR0);
     dstr_free(dstr);
 
-    dstr = dstr_alloc_from_cstr(TEST_STR1);
+    dstr = dstr_alloc_cstr(TEST_STR1);
     EMU_REQUIRE_NOT_NULL(dstr);
     EMU_REQUIRE_GE_UINT(da_capacity(dstr), da_length(dstr));
     EMU_REQUIRE_EQ_UINT(strlen(dstr), strlen(TEST_STR1));
@@ -638,10 +638,10 @@ EMU_TEST(dstr_alloc_from_cstr__and__dstr_free);
     EMU_END_TEST();
 }
 
-EMU_TEST(dstr_alloc_from_dstr__and__dstr_free);
+EMU_TEST(dstr_alloc_dstr__and__dstr_free);
 {
-    char* src = dstr_alloc_from_cstr(EMPTY_STR);
-    char* dest = dstr_alloc_from_dstr(src);
+    char* src = dstr_alloc_cstr(EMPTY_STR);
+    char* dest = dstr_alloc_dstr(src);
     EMU_REQUIRE_NOT_NULL(dest);
     EMU_REQUIRE_GE_UINT(da_capacity(dest), da_length(dest));
     EMU_REQUIRE_EQ_UINT(strlen(dest), 0);
@@ -650,8 +650,8 @@ EMU_TEST(dstr_alloc_from_dstr__and__dstr_free);
     dstr_free(src);
     dstr_free(dest);
 
-    src = dstr_alloc_from_cstr(TEST_STR0);
-    dest = dstr_alloc_from_dstr(src);
+    src = dstr_alloc_cstr(TEST_STR0);
+    dest = dstr_alloc_dstr(src);
     EMU_REQUIRE_NOT_NULL(dest);
     EMU_REQUIRE_GE_UINT(da_capacity(dest), da_length(dest));
     EMU_REQUIRE_EQ_UINT(strlen(dest), strlen(TEST_STR0));
@@ -660,8 +660,8 @@ EMU_TEST(dstr_alloc_from_dstr__and__dstr_free);
     dstr_free(src);
     dstr_free(dest);
 
-    src = dstr_alloc_from_cstr(TEST_STR1);
-    dest = dstr_alloc_from_dstr(src);
+    src = dstr_alloc_cstr(TEST_STR1);
+    dest = dstr_alloc_dstr(src);
     EMU_REQUIRE_NOT_NULL(dest);
     EMU_REQUIRE_GE_UINT(da_capacity(dest), da_length(dest));
     EMU_REQUIRE_EQ_UINT(strlen(dest), strlen(TEST_STR1));
@@ -673,9 +673,9 @@ EMU_TEST(dstr_alloc_from_dstr__and__dstr_free);
     EMU_END_TEST();
 }
 
-EMU_TEST(dstr_alloc_from_format__and__dstr_free)
+EMU_TEST(dstr_alloc_format__and__dstr_free)
 {
-    char* dstr = dstr_alloc_from_format("%d %s", 5, "foo");
+    char* dstr = dstr_alloc_format("%d %s", 5, "foo");
     EMU_REQUIRE_NOT_NULL(dstr);
     EMU_REQUIRE_GE_UINT(da_capacity(dstr), da_length(dstr));
     EMU_REQUIRE_EQ_UINT(strlen(dstr), 5);
@@ -688,9 +688,9 @@ EMU_TEST(dstr_alloc_from_format__and__dstr_free)
 EMU_GROUP(dstring_alloc_and_free_functions)
 {
     EMU_ADD(dstr_alloc_empty__and__dstr_free);
-    EMU_ADD(dstr_alloc_from_cstr__and__dstr_free);
-    EMU_ADD(dstr_alloc_from_dstr__and__dstr_free);
-    EMU_ADD(dstr_alloc_from_format__and__dstr_free);
+    EMU_ADD(dstr_alloc_cstr__and__dstr_free);
+    EMU_ADD(dstr_alloc_dstr__and__dstr_free);
+    EMU_ADD(dstr_alloc_format__and__dstr_free);
     EMU_END_GROUP();
 }
 
@@ -700,7 +700,7 @@ EMU_GROUP(dstring_alloc_and_free_functions)
 
 EMU_TEST(dstr_reassign_empty)
 {
-    char* dstr = dstr_alloc_from_cstr(FIRST_STR);
+    char* dstr = dstr_alloc_cstr(FIRST_STR);
     dstr = dstr_reassign_empty(dstr);
     EMU_REQUIRE_NOT_NULL(dstr);
     EMU_REQUIRE_GE_UINT(da_capacity(dstr), da_length(dstr));
@@ -711,18 +711,18 @@ EMU_TEST(dstr_reassign_empty)
     EMU_END_TEST();
 }
 
-EMU_TEST(dstr_reassign_from_cstr)
+EMU_TEST(dstr_reassign_cstr)
 {
-    char* dstr = dstr_alloc_from_cstr(FIRST_STR);
+    char* dstr = dstr_alloc_cstr(FIRST_STR);
 
-    dstr = dstr_reassign_from_cstr(dstr, SHORTER_STR);
+    dstr = dstr_reassign_cstr(dstr, SHORTER_STR);
     EMU_REQUIRE_NOT_NULL(dstr);
     EMU_REQUIRE_GE_UINT(da_capacity(dstr), da_length(dstr));
     EMU_REQUIRE_EQ_UINT(strlen(dstr), strlen(SHORTER_STR));
     EMU_REQUIRE_EQ_UINT(da_length(dstr), strlen(dstr)+1);
     EMU_REQUIRE_STREQ(dstr, SHORTER_STR);
 
-    dstr = dstr_reassign_from_cstr(dstr, LONGER_STR);
+    dstr = dstr_reassign_cstr(dstr, LONGER_STR);
     EMU_REQUIRE_NOT_NULL(dstr);
     EMU_REQUIRE_GE_UINT(da_capacity(dstr), da_length(dstr));
     EMU_REQUIRE_EQ_UINT(strlen(dstr), strlen(LONGER_STR));
@@ -733,13 +733,13 @@ EMU_TEST(dstr_reassign_from_cstr)
     EMU_END_TEST();
 }
 
-EMU_TEST(dstr_reassign_from_dstr)
+EMU_TEST(dstr_reassign_dstr)
 {
-    char* dstr = dstr_alloc_from_cstr(FIRST_STR);
+    char* dstr = dstr_alloc_cstr(FIRST_STR);
     char* src;
 
-    src = dstr_alloc_from_cstr(SHORTER_STR);
-    dstr = dstr_reassign_from_dstr(dstr, src);
+    src = dstr_alloc_cstr(SHORTER_STR);
+    dstr = dstr_reassign_dstr(dstr, src);
     EMU_REQUIRE_NOT_NULL(dstr);
     EMU_REQUIRE_GE_UINT(da_capacity(dstr), da_length(dstr));
     EMU_REQUIRE_EQ_UINT(strlen(dstr), strlen(SHORTER_STR));
@@ -747,8 +747,8 @@ EMU_TEST(dstr_reassign_from_dstr)
     EMU_REQUIRE_STREQ(dstr, SHORTER_STR);
     dstr_free(src);
 
-    src = dstr_alloc_from_cstr(LONGER_STR);
-    dstr = dstr_reassign_from_dstr(dstr, src);
+    src = dstr_alloc_cstr(LONGER_STR);
+    dstr = dstr_reassign_dstr(dstr, src);
     EMU_REQUIRE_NOT_NULL(dstr);
     EMU_REQUIRE_GE_UINT(da_capacity(dstr), da_length(dstr));
     EMU_REQUIRE_EQ_UINT(strlen(dstr), strlen(LONGER_STR));
@@ -760,10 +760,10 @@ EMU_TEST(dstr_reassign_from_dstr)
     EMU_END_TEST();
 }
 
-EMU_TEST(dstr_reassign_from_format)
+EMU_TEST(dstr_reassign_format)
 {
-    char* dstr = dstr_alloc_from_cstr(FIRST_STR);
-    dstr = dstr_reassign_from_format(dstr, "%d %s", 5, "foo");
+    char* dstr = dstr_alloc_cstr(FIRST_STR);
+    dstr = dstr_reassign_format(dstr, "%d %s", 5, "foo");
     EMU_REQUIRE_NOT_NULL(dstr);
     EMU_REQUIRE_GE_UINT(da_capacity(dstr), da_length(dstr));
     EMU_REQUIRE_EQ_UINT(strlen(dstr), 5);
@@ -775,9 +775,9 @@ EMU_TEST(dstr_reassign_from_format)
 EMU_GROUP(dstring_reassignment_functions)
 {
     EMU_ADD(dstr_reassign_empty);
-    EMU_ADD(dstr_reassign_from_cstr);
-    EMU_ADD(dstr_reassign_from_dstr);
-    EMU_ADD(dstr_reassign_from_format);
+    EMU_ADD(dstr_reassign_cstr);
+    EMU_ADD(dstr_reassign_dstr);
+    EMU_ADD(dstr_reassign_format);
     EMU_END_GROUP();
 }
 
@@ -786,7 +786,7 @@ EMU_TEST(dstr_length)
     char* dstr = dstr_alloc_empty();
     EMU_EXPECT_EQ_UINT(dstr_length(dstr), 0);
     dstr_free(dstr);
-    dstr = dstr_alloc_from_cstr(TEST_STR0);
+    dstr = dstr_alloc_cstr(TEST_STR0);
     EMU_EXPECT_EQ_UINT(dstr_length(dstr), strlen(TEST_STR0));
     EMU_EXPECT_EQ_UINT(dstr_length(dstr), da_length(dstr)-1);
     dstr_free(dstr);
@@ -795,7 +795,7 @@ EMU_TEST(dstr_length)
 
 EMU_TEST(dstr_concat_char)
 {
-    char* dstr = dstr_alloc_from_cstr(TEST_STR0);
+    char* dstr = dstr_alloc_cstr(TEST_STR0);
 
     dstr = dstr_concat_char(dstr, 'A');
     EMU_REQUIRE_NOT_NULL(dstr);
@@ -818,7 +818,7 @@ EMU_TEST(dstr_concat_char)
 
 EMU_TEST(dstr_concat_cstr)
 {
-    char* dstr = dstr_alloc_from_cstr(TEST_STR0);
+    char* dstr = dstr_alloc_cstr(TEST_STR0);
 
     dstr = dstr_concat_cstr(dstr, TEST_STR1);
     EMU_REQUIRE_NOT_NULL(dstr);
@@ -838,8 +838,8 @@ EMU_TEST(dstr_concat_cstr)
 
 EMU_TEST(dstr_concat_dstr)
 {
-    char* dest = dstr_alloc_from_cstr(TEST_STR0);
-    char* src = dstr_alloc_from_cstr(TEST_STR1);
+    char* dest = dstr_alloc_cstr(TEST_STR0);
+    char* src = dstr_alloc_cstr(TEST_STR1);
 
     dest = dstr_concat_dstr(dest, src);
     EMU_REQUIRE_NOT_NULL(dest);
@@ -904,7 +904,7 @@ EMU_GROUP(dstr_cmp_functions)
 
 EMU_TEST(dstr_find)
 {
-    darray(char) dstr = dstr_alloc_from_cstr("Hello, World!");
+    darray(char) dstr = dstr_alloc_cstr("Hello, World!");
     EMU_EXPECT_EQ_INT(dstr_find(dstr, "Hello"), 0);
     EMU_EXPECT_EQ_INT(dstr_find(dstr, "hello"), -1);
     EMU_EXPECT_EQ_INT(dstr_find(dstr, "World!"), 7);
@@ -914,7 +914,7 @@ EMU_TEST(dstr_find)
 
 EMU_TEST(dstr_find_case)
 {
-    darray(char) dstr = dstr_alloc_from_cstr("Hello, World!");
+    darray(char) dstr = dstr_alloc_cstr("Hello, World!");
     EMU_EXPECT_EQ_INT(dstr_find_case(dstr, "Hello"), 0);
     EMU_EXPECT_EQ_INT(dstr_find_case(dstr, "hello"), 0);
     EMU_EXPECT_EQ_INT(dstr_find_case(dstr, "World!"), 7);
@@ -933,7 +933,7 @@ EMU_GROUP(dstr_find_functions)
 EMU_TEST(dstr_replace_all)
 {
     char some_str[] = "Hello, World! Hello again.";
-    darray(char) dstr = dstr_alloc_from_cstr(some_str);
+    darray(char) dstr = dstr_alloc_cstr(some_str);
     dstr = dstr_replace_all(dstr, "world", "foo");
     EMU_EXPECT_STREQ(dstr, some_str);
     dstr = dstr_replace_all(dstr, "Hello", "foo");
@@ -945,7 +945,7 @@ EMU_TEST(dstr_replace_all)
 EMU_TEST(dstr_replace_all_case)
 {
     char some_str[] = "Hello, World! Hello again.";
-    darray(char) dstr = dstr_alloc_from_cstr(some_str);
+    darray(char) dstr = dstr_alloc_cstr(some_str);
     dstr = dstr_replace_all_case(dstr, "world", "foo");
     EMU_EXPECT_STREQ(dstr, "Hello, foo! Hello again.");
     dstr = dstr_replace_all_case(dstr, "Hello", "foo");
@@ -963,12 +963,12 @@ EMU_GROUP(dstr_replace_functions)
 
 EMU_TEST(dstr_transform_lower)
 {
-    char* dstr = dstr_alloc_from_cstr("ALL UPPER");
+    char* dstr = dstr_alloc_cstr("ALL UPPER");
     dstr_transform_lower(dstr);
     EMU_EXPECT_STREQ(dstr, "all upper");
     dstr_free(dstr);
 
-    dstr = dstr_alloc_from_cstr("mIXeD CaSE123");
+    dstr = dstr_alloc_cstr("mIXeD CaSE123");
     dstr_transform_lower(dstr);
     EMU_EXPECT_STREQ(dstr, "mixed case123");
     dstr_free(dstr);
@@ -978,12 +978,12 @@ EMU_TEST(dstr_transform_lower)
 
 EMU_TEST(dstr_transform_upper)
 {
-    char* dstr = dstr_alloc_from_cstr("all lower");
+    char* dstr = dstr_alloc_cstr("all lower");
     dstr_transform_upper(dstr);
     EMU_EXPECT_STREQ(dstr, "ALL LOWER");
     dstr_free(dstr);
 
-    dstr = dstr_alloc_from_cstr("mIXeD CaSE123");
+    dstr = dstr_alloc_cstr("mIXeD CaSE123");
     dstr_transform_upper(dstr);
     EMU_EXPECT_STREQ(dstr, "MIXED CASE123");
     dstr_free(dstr);
@@ -1000,7 +1000,7 @@ EMU_GROUP(dstr_transform_functions)
 
 EMU_TEST(dstr_trim)
 {
-    char* dstr = dstr_alloc_from_cstr(" \t\n\v\f\rfoo \t\n\v\f\r");
+    char* dstr = dstr_alloc_cstr(" \t\n\v\f\rfoo \t\n\v\f\r");
     dstr = dstr_trim(dstr);
     EMU_EXPECT_STREQ(dstr, "foo");
     EMU_END_TEST();

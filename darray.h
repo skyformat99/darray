@@ -340,17 +340,17 @@ darray(char) dstr_alloc_empty(void) DA_WARN_UNUSED_RESULT;
  *
  * @return Pointer to a new dstring on success. `NULL` on allocation failure.
  */
-darray(char) dstr_alloc_from_cstr(const char* src) DA_WARN_UNUSED_RESULT;
+darray(char) dstr_alloc_cstr(const char* src) DA_WARN_UNUSED_RESULT;
 
 /**@function
  * @brief Allocate a dstring as a copy of dstring `src`. Faster than
- *  `dstr_alloc_from_cstr` when copying a dstring.
+ *  `dstr_alloc_cstr` when copying a dstring.
  *
  * @param src : dstring to copy.
  *
  * @return Pointer to a new dstring on success. `NULL` on allocation failure.
  */
-darray(char) dstr_alloc_from_dstr(const darray(char) src) DA_WARN_UNUSED_RESULT;
+darray(char) dstr_alloc_dstr(const darray(char) src) DA_WARN_UNUSED_RESULT;
 
 /**@function
  * @brief Allocate a dstring using `sprintf` style formatting.
@@ -360,8 +360,7 @@ darray(char) dstr_alloc_from_dstr(const darray(char) src) DA_WARN_UNUSED_RESULT;
  *
  * @return Pointer to a new dstring on success. `NULL` on allocation failure.
  */
-darray(char) dstr_alloc_from_format(const char* format, ...)
-    DA_WARN_UNUSED_RESULT;
+darray(char) dstr_alloc_format(const char* format, ...) DA_WARN_UNUSED_RESULT;
 
 /**@function
  * @brief Free a dstring. Equivalent to calling `da_free` on `dstr`.
@@ -394,8 +393,8 @@ darray(char) dstr_reassign_empty(darray(char) allocated_dstr)
  * @return Pointer to the reassigned dstring on success. `NULL` on allocation
  *  failure.
  */
-darray(char) dstr_reassign_from_cstr(darray(char) allocated_dstr,
-    const char* src) DA_WARN_UNUSED_RESULT;
+darray(char) dstr_reassign_cstr(darray(char) allocated_dstr, const char* src)
+    DA_WARN_UNUSED_RESULT;
 
 
 /**@function
@@ -409,7 +408,7 @@ darray(char) dstr_reassign_from_cstr(darray(char) allocated_dstr,
  * @return Pointer to the reassigned dstring on success. `NULL` on allocation
  *  failure.
  */
-darray(char) dstr_reassign_from_dstr(darray(char) allocated_dstr,
+darray(char) dstr_reassign_dstr(darray(char) allocated_dstr,
     const darray(char) src) DA_WARN_UNUSED_RESULT;
 
 /**@function
@@ -422,7 +421,7 @@ darray(char) dstr_reassign_from_dstr(darray(char) allocated_dstr,
  * @return Pointer to the reassigned dstring on success. `NULL` on allocation
  *  failure.
  */
-darray(char) dstr_reassign_from_format(darray(char) allocated_dstr,
+darray(char) dstr_reassign_format(darray(char) allocated_dstr,
     const char* format, ...) DA_WARN_UNUSED_RESULT;
 
 /**@function

@@ -5,15 +5,15 @@
 1. [API](#api)
     + [Creation and Deletion](#creation-and-deletion)
         + [dstr_alloc_empty](#dstr_alloc_empty)
-        + [dstr_alloc_from_cstr](#dstr_alloc_from_cstr)
-        + [dstr_alloc_from_dstr](#dstr_alloc_from_dstr)
-        + [dstr_alloc_from_format](#dstr_alloc_from_format)
+        + [dstr_alloc_cstr](#dstr_alloc_cstr)
+        + [dstr_alloc_dstr](#dstr_alloc_dstr)
+        + [dstr_alloc_format](#dstr_alloc_format)
         + [dstr_free](#dstr_free)
     + [Reassignment](#reassignment)
         + [dstr_reassign_empty](#dstr_reassign_empty)
-        + [dstr_reassign_from_cstr](#dstr_reassign_from_cstr)
-        + [dstr_reassign_from_dstr](#dstr_reassign_from_dstr)
-        + [dstr_reassign_from_format](#dstr_reassign_from_format)
+        + [dstr_reassign_cstr](#dstr_reassign_cstr)
+        + [dstr_reassign_dstr](#dstr_reassign_dstr)
+        + [dstr_reassign_format](#dstr_reassign_format)
     + [Dstring Data](#dstring-data)
         + [dstr_length](#dstr_length)
     + [Concatination](#concatination)
@@ -51,28 +51,28 @@ Returns a pointer to a new dstring on success. `NULL` on allocation failure.
 darray(char) dstr_alloc_empty(void);
 ```
 
-#### dstr_alloc_from_cstr
+#### dstr_alloc_cstr
 Allocate a dstring as copy of cstring `src`. `src` may also be a dstring.
 
 Returns a pointer to a new dstring on success. `NULL` on allocation failure.
 ```C
-darray(char) dstr_alloc_from_cstr(const char* src);
+darray(char) dstr_alloc_cstr(const char* src);
 ```
 
-#### dstr_alloc_from_dstr
-Allocate a dstring as a copy of dstring `src`. Faster than `dstr_alloc_from_cstr` when copying a dstring.
+#### dstr_alloc_dstr
+Allocate a dstring as a copy of dstring `src`. Faster than `dstr_alloc_cstr` when copying a dstring.
 
 Returns a pointer to a new dstring on success. `NULL` on allocation failure.
 ```C
-darray(char) dstr_alloc_from_dstr(const darray(char) src);
+darray(char) dstr_alloc_dstr(const darray(char) src);
 ```
 
-#### dstr_alloc_from_format
+#### dstr_alloc_format
 Allocate a dstring using `sprintf` style formatting.
 
 Returns a pointer to a new dstring on success. `NULL` on allocation failure.
 ```C
-darray(char) dstr_alloc_from_format(const char* format, ...);
+darray(char) dstr_alloc_format(const char* format, ...);
 ```
 
 #### dstr_free
@@ -94,28 +94,28 @@ Returns a pointer to the reassigned dstring on success. `NULL` on allocation fai
 darray(char) dstr_reassign_empty(darray(char) allocated_dstr);
 ```
 
-#### dstr_reassign_from_cstr
+#### dstr_reassign_cstr
 Reassign the contents of an allocated dstring to that of a cstring, reallocating memory only when neccesary.
 
 Returns a pointer to the reassigned dstring on success. `NULL` on allocation failure.
 ```C
-darray(char) dstr_reassign_from_cstr(darray(char) allocated_dstr, const char* src)
+darray(char) dstr_reassign_cstr(darray(char) allocated_dstr, const char* src)
 ```
 
-#### dstr_reassign_from_dstr
+#### dstr_reassign_dstr
 Reassign the contents of an allocated dstring to that of a dstring, reallocating memory only when neccesary.
 
 Returns a pointer to the reassigned dstring on success. `NULL` on allocation failure.
 ```C
-darray(char) dstr_reassign_from_dstr(darray(char) allocated_dstr, const darray(char) src)
+darray(char) dstr_reassign_dstr(darray(char) allocated_dstr, const darray(char) src)
 ```
 
-#### dstr_reassign_from_format
+#### dstr_reassign_format
 Reassign the contents of an allocated dstring using `sprintf` style formatting, reallocating memory only when neccesary.
 
 Returns a pointer to the reassigned dstring on success. `NULL` on allocation failure.
 ```C
-darray(char) dstr_reassign_from_format(darray(char) allocated_dstr, const char* format, ...)
+darray(char) dstr_reassign_format(darray(char) allocated_dstr, const char* format, ...)
 ```
 
 ----

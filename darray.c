@@ -154,7 +154,7 @@ darray(char) dstr_alloc_empty(void)
     return dstr;
 }
 
-darray(char) dstr_alloc_from_cstr(const char* src)
+darray(char) dstr_alloc_cstr(const char* src)
 {
     size_t src_len_with_nullterm = strlen(src)+1;
     char* dstr = da_alloc(src_len_with_nullterm, sizeof(char));
@@ -164,7 +164,7 @@ darray(char) dstr_alloc_from_cstr(const char* src)
     return dstr;
 }
 
-darray(char) dstr_alloc_from_dstr(const darray(char) src)
+darray(char) dstr_alloc_dstr(const darray(char) src)
 {
     size_t src_len_with_nullterm = da_length(src);
     char* dstr = da_alloc(src_len_with_nullterm, sizeof(char));
@@ -174,7 +174,7 @@ darray(char) dstr_alloc_from_dstr(const darray(char) src)
     return dstr;
 }
 
-darray(char) dstr_alloc_from_format(const char* format, ...)
+darray(char) dstr_alloc_format(const char* format, ...)
 {
     va_list args;
     va_start(args, format);
@@ -205,7 +205,7 @@ darray(char) dstr_reassign_empty(darray(char) allocated_dstr)
     return allocated_dstr;
 }
 
-darray(char) dstr_reassign_from_cstr(darray(char) allocated_dstr,
+darray(char) dstr_reassign_cstr(darray(char) allocated_dstr,
     const char* src)
 {
     *DA_P_LENGTH_FROM_HANDLE(allocated_dstr) = 0;
@@ -213,7 +213,7 @@ darray(char) dstr_reassign_from_cstr(darray(char) allocated_dstr,
     return allocated_dstr;
 }
 
-darray(char) dstr_reassign_from_dstr(darray(char) allocated_dstr,
+darray(char) dstr_reassign_dstr(darray(char) allocated_dstr,
     const darray(char) src)
 {
     *DA_P_LENGTH_FROM_HANDLE(allocated_dstr) = 0;
@@ -221,7 +221,7 @@ darray(char) dstr_reassign_from_dstr(darray(char) allocated_dstr,
     return allocated_dstr;
 }
 
-darray(char) dstr_reassign_from_format(darray(char) allocated_dstr,
+darray(char) dstr_reassign_format(darray(char) allocated_dstr,
     const char* format, ...)
 {
     va_list args;
