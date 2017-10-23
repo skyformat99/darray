@@ -479,7 +479,7 @@ darray(char) dstr_concat_dstr(darray(char) dest, const darray(char) src)
     DA_WARN_UNUSED_RESULT;
 
 /**@function
- * @brief Append  string to dstring `dest` using `sprintf` style formatting.
+ * @brief Append a string to dstring `dest` using `sprintf` style formatting.
  *
  * @param dest : Target dstring that will be appended to. Like `da_concat`
  *  references to `dest` may be invalidated across the function call. Use the

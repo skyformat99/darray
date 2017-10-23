@@ -20,6 +20,7 @@
         + [dstr_concat_char](#dstr_concat_char)
         + [dstr_concat_cstr](#dstr_concat_cstr)
         + [dstr_concat_dstr](#dstr_concat_dstr)
+        + [dstr_concat_format](#dstr_concat_format)
     + [Comparison](#comparison)
         + [dstr_cmp](#dstr_cmp)
         + [dstr_cmp_case](#dstr_cmp_case)
@@ -158,6 +159,17 @@ Returns a pointer to the new location of the dstring upon successful function co
 darray(char) dstr_concat_dstr(darray(char) dest, const darray(char) src);
 ```
 Like `da_concat` references to `dest` may be invalidated across the function call. Use the return value of `dstr_concat_dstr` as truth for the location of `dest` after function completion.
+
+#### dstr_concat_format
+Append a string to dstring `dest` using `sprintf` style formatting.
+
+Returns a pointer to the new location of the dstring upon successful function completion. If `dstr_concat_format` returns `NULL`, reallocation failed and `dstr` is left untouched.
+```C
+darray(char) dstr_concat_format(darray(char) dest, const char* format, ...);
+```
+
+
+Like `da_concat` references to `dest` may be invalidated across the function call. Use the return value of `dstr_concat_format` as truth for the location of `dest` after function completion.
 
 ----
 
