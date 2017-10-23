@@ -479,6 +479,19 @@ darray(char) dstr_concat_dstr(darray(char) dest, const darray(char) src)
     DA_WARN_UNUSED_RESULT;
 
 /**@function
+ * @brief Append  string to dstring `dest` using `sprintf` style formatting.
+ *
+ * @param dest : Target dstring that will be appended to. Like `da_concat`
+ *  references to `dest` may be invalidated across the function call. Use the
+ *  return value of `dstr_concat_format` as truth for the location of `dest`
+ *  after function completion.
+ * @param format : `sprintf` style format string.
+ * @param ... : va arg list for the format string.
+ */
+darray(char) dstr_concat_format(darray(char) dest, const char* format, ...)
+    DA_WARN_UNUSED_RESULT;
+
+/**@function
  * @brief Comparison function. Currently functionally equivalent to `strcmp`.
  *
  * @param s1 : First dstring.

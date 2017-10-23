@@ -278,6 +278,28 @@ darray(char) dstr_concat_dstr(darray(char) dest, const darray(char) src)
     return dest;
 }
 
+darray(char) dstr_concat_format(darray(char) dest, const char* format, ...)
+{
+    size_t dest_strlen = dstr_length(dest);
+
+    va_list args;
+    va_start(args, format);
+
+    va_list copy;
+    va_copy(copy, args);
+    size_t formatted_strlen = vsnprintf(NULL, 0, format, copy);
+    va_end(copy);
+
+    dest = da_reserve(dest, formatted_strlen);
+    if (dest == NULL)
+        return NULL;
+    vsprintf(dest+dest_strlen, format, args);
+    *DA_P_LENGTH_FROM_HANDLE(dest) += formatted_strlen;
+
+    va_end(args);
+    return dest;
+}
+
 int dstr_cmp(const darray(char) s1, const char* s2)
 {
     while (*s1 == *s2 && *s1 != '\0')

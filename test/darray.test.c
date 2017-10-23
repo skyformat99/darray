@@ -858,11 +858,26 @@ EMU_TEST(dstr_concat_dstr)
     EMU_END_TEST();
 }
 
+EMU_TEST(dstr_concat_format)
+{
+    char* dstr = dstr_alloc_cstr(TEST_STR0);
+
+    dstr = dstr_concat_format(dstr, "%sA", TEST_STR1);
+    EMU_REQUIRE_NOT_NULL(dstr);
+    EMU_REQUIRE_EQ_UINT(strlen(dstr), strlen(TEST_STR0 TEST_STR1 "A"));
+    EMU_REQUIRE_EQ_UINT(dstr_length(dstr), strlen(TEST_STR0 TEST_STR1 "A"));
+    EMU_REQUIRE_STREQ(dstr, TEST_STR0 TEST_STR1 "A");
+
+    dstr_free(dstr);
+    EMU_END_TEST();
+}
+
 EMU_GROUP(dstr_concat_functions)
 {
     EMU_ADD(dstr_concat_char);
     EMU_ADD(dstr_concat_cstr);
     EMU_ADD(dstr_concat_dstr);
+    EMU_ADD(dstr_concat_format);
     EMU_END_GROUP();
 }
 
