@@ -796,12 +796,22 @@ EMU_TEST(dstr_length)
 EMU_TEST(dstr_concat_char)
 {
     char* dstr = dstr_alloc_from_cstr(TEST_STR0);
+
     dstr = dstr_concat_char(dstr, 'A');
     EMU_REQUIRE_NOT_NULL(dstr);
     EMU_REQUIRE_EQ_UINT(strlen(dstr), strlen(TEST_STR0)+1);
+    EMU_REQUIRE_EQ_UINT(dstr_length(dstr), strlen(TEST_STR0)+1);
     char cmpstr[100] = TEST_STR0;
     strcat(cmpstr, "A");
     EMU_REQUIRE_STREQ(dstr, cmpstr);
+
+    dstr = dstr_concat_char(dstr, 'B');
+    EMU_REQUIRE_NOT_NULL(dstr);
+    EMU_REQUIRE_EQ_UINT(strlen(dstr), strlen(TEST_STR0)+2);
+    EMU_REQUIRE_EQ_UINT(dstr_length(dstr), strlen(TEST_STR0)+2);
+    strcat(cmpstr, "B");
+    EMU_REQUIRE_STREQ(dstr, cmpstr);
+
     dstr_free(dstr);
     EMU_END_TEST();
 }
@@ -809,10 +819,19 @@ EMU_TEST(dstr_concat_char)
 EMU_TEST(dstr_concat_cstr)
 {
     char* dstr = dstr_alloc_from_cstr(TEST_STR0);
+
     dstr = dstr_concat_cstr(dstr, TEST_STR1);
     EMU_REQUIRE_NOT_NULL(dstr);
     EMU_REQUIRE_EQ_UINT(strlen(dstr), strlen(TEST_STR0 TEST_STR1));
+    EMU_REQUIRE_EQ_UINT(dstr_length(dstr), strlen(TEST_STR0 TEST_STR1));
     EMU_REQUIRE_STREQ(dstr, TEST_STR0 TEST_STR1);
+
+    dstr = dstr_concat_cstr(dstr, TEST_STR1);
+    EMU_REQUIRE_NOT_NULL(dstr);
+    EMU_REQUIRE_EQ_UINT(strlen(dstr), strlen(TEST_STR0 TEST_STR1 TEST_STR1));
+    EMU_REQUIRE_EQ_UINT(dstr_length(dstr), strlen(TEST_STR0 TEST_STR1 TEST_STR1));
+    EMU_REQUIRE_STREQ(dstr, TEST_STR0 TEST_STR1 TEST_STR1);
+
     dstr_free(dstr);
     EMU_END_TEST();
 }
@@ -821,10 +840,19 @@ EMU_TEST(dstr_concat_dstr)
 {
     char* dest = dstr_alloc_from_cstr(TEST_STR0);
     char* src = dstr_alloc_from_cstr(TEST_STR1);
+
     dest = dstr_concat_dstr(dest, src);
     EMU_REQUIRE_NOT_NULL(dest);
     EMU_REQUIRE_EQ_UINT(strlen(dest), strlen(TEST_STR0 TEST_STR1));
+    EMU_REQUIRE_EQ_UINT(dstr_length(dest), strlen(TEST_STR0 TEST_STR1));
     EMU_REQUIRE_STREQ(dest, TEST_STR0 TEST_STR1);
+
+    dest = dstr_concat_dstr(dest, src);
+    EMU_REQUIRE_NOT_NULL(dest);
+    EMU_REQUIRE_EQ_UINT(strlen(dest), strlen(TEST_STR0 TEST_STR1 TEST_STR1));
+    EMU_REQUIRE_EQ_UINT(dstr_length(dest), strlen(TEST_STR0 TEST_STR1 TEST_STR1));
+    EMU_REQUIRE_STREQ(dest, TEST_STR0 TEST_STR1 TEST_STR1);
+
     dstr_free(dest);
     dstr_free(src);
     EMU_END_TEST();

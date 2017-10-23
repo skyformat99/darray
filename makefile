@@ -28,7 +28,7 @@ install: build
 	install $(DARRAY_HEADER) $(INSTALL_INCLUDE_DIR)$(DARRAY_HEADER)
 
 unit_tests: build
-	$(CC) $(CFLAGS) -o $(BUILD_DIR)unit_tests $(TEST_DIR)darray.test.c -L$(BUILD_DIR) -I${EMU_ROOT} -l$(DARRAY_LIB)
+	$(CC) $(CFLAGS) -g -o $(BUILD_DIR)unit_tests $(TEST_DIR)darray.test.c -L$(BUILD_DIR) -I${EMU_ROOT} -l$(DARRAY_LIB)
 
 perf_tests: build
 	$(CC) $(CFLAGS) -o $(BUILD_DIR)perf_tests_darr $(TEST_DIR)perf_tests/perf.test.c -L$(BUILD_DIR) -l$(DARRAY_LIB) $(OPTIMIZATION_LEVEL)

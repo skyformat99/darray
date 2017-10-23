@@ -262,6 +262,7 @@ darray(char) dstr_concat_cstr(darray(char) dest, const char* src)
     if (dest == NULL)
         return NULL;
     memcpy(dest+dest_strlen, src, src_strlen+1);
+    *DA_P_LENGTH_FROM_HANDLE(dest) += src_strlen;
     return dest;
 }
 
@@ -273,6 +274,7 @@ darray(char) dstr_concat_dstr(darray(char) dest, const darray(char) src)
     if (dest == NULL)
         return NULL;
     memcpy(dest+dest_strlen, src, src_strlen+1);
+    *DA_P_LENGTH_FROM_HANDLE(dest) += src_strlen;
     return dest;
 }
 
