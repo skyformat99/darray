@@ -631,7 +631,7 @@ struct _darray
         _darr[(*DA_P_LENGTH_FROM_HANDLE(_darr))++] = _value;                   \
     }                                                                          \
     /* return */_darr;                                                         \
-})
+})                                                                             \
 
 #define /* ELEM_TYPE */_da_pop(/* ELEM_TYPE* */darr)                           \
 ({                                                                             \
