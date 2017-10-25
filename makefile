@@ -24,7 +24,6 @@ build: clean
 
 install: build
 	install $(BUILD_DIR)$(DARRAY_LIB_OUT) $(INSTALL_LIB_DIR)$(DARRAY_LIB_OUT)
-	mkdir -p $(INSTALL_INCLUDE_DIR)
 	install $(DARRAY_HEADER) $(INSTALL_INCLUDE_DIR)$(DARRAY_HEADER)
 
 unit_tests: build
