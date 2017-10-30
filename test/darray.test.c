@@ -11,6 +11,31 @@
 #define TEST_STR0 "foobar"
 #define TEST_STR1 "Darray is the best library!"
 
+int cust_counter;
+void* custom_malloc(size_t size)
+{
+    cust_counter++;
+    return malloc(size);
+}
+
+void* custom_realloc(void* ptr, size_t size)
+{
+    cust_counter++;
+    return realloc(ptr, size);
+}
+
+void custom_free(void* ptr)
+{
+    cust_counter++;
+    free(ptr);
+}
+
+struct da_mem_funcs custom_mem_funcs = {
+    .alloc_f=custom_malloc,
+    .realloc_f=custom_realloc,
+    .free_f=custom_free
+};
+
 EMU_TEST(da_length)
 {
     struct _darray dastruct;
@@ -84,10 +109,52 @@ EMU_TEST(da_alloc_exact__and__da_free)
     EMU_END_TEST();
 }
 
+EMU_TEST(da_alloc_custom__and__da_free)
+{
+    cust_counter = 0;
+    int* da = da_alloc_custom(custom_mem_funcs, INITIAL_NUM_ELEMS, sizeof(int));
+    EMU_REQUIRE_EQ_INT(cust_counter, 1);
+    EMU_REQUIRE_NOT_NULL(da);
+    EMU_REQUIRE_EQ_UINT(da_length(da), INITIAL_NUM_ELEMS);
+    EMU_REQUIRE_GE_UINT(da_capacity(da), INITIAL_NUM_ELEMS);
+    EMU_REQUIRE_EQ_UINT(da_sizeof_elem(da), sizeof(int));
+
+    for (size_t i = 0; i < INITIAL_NUM_ELEMS; ++i) // writiable without crashing
+    {
+        da[i] = i;
+    }
+
+    da_free(da);
+    EMU_REQUIRE_EQ(cust_counter, 2);
+    EMU_END_TEST();
+}
+
+EMU_TEST(da_alloc_exact_custom__and__da_free)
+{
+    cust_counter = 0;
+    int* da = da_alloc_exact_custom(custom_mem_funcs, INITIAL_NUM_ELEMS, sizeof(int));
+    EMU_REQUIRE_EQ(cust_counter, 1);
+    EMU_REQUIRE_NOT_NULL(da);
+    EMU_REQUIRE_EQ_UINT(da_length(da), INITIAL_NUM_ELEMS);
+    EMU_REQUIRE_EQ_UINT(da_capacity(da), INITIAL_NUM_ELEMS);
+    EMU_REQUIRE_EQ_UINT(da_sizeof_elem(da), sizeof(int));
+
+    for (size_t i = 0; i < INITIAL_NUM_ELEMS; ++i) // writiable without crashing
+    {
+        da[i] = i;
+    }
+
+    da_free(da);
+    EMU_REQUIRE_EQ(cust_counter, 2);
+    EMU_END_TEST();
+}
+
 EMU_GROUP(darray_alloc_and_free_functions)
 {
     EMU_ADD(da_alloc__and__da_free);
     EMU_ADD(da_alloc_exact__and__da_free);
+    EMU_ADD(da_alloc_custom__and__da_free);
+    EMU_ADD(da_alloc_exact_custom__and__da_free);
     EMU_END_GROUP();
 }
 
@@ -130,6 +197,31 @@ EMU_TEST(da_resize_exact)
     }
 
     da_free(da);
+    EMU_END_TEST();
+}
+
+EMU_TEST(da_resize_with_custom_memory_management)
+{
+    cust_counter = 0;
+    int* da = da_alloc_custom(custom_mem_funcs, INITIAL_NUM_ELEMS, sizeof(int));
+    EMU_REQUIRE_EQ_INT(cust_counter, 1);
+    for (size_t i = 0; i < INITIAL_NUM_ELEMS; ++i)
+    {
+        da[i] = i;
+    }
+
+    da = da_resize(da, RESIZE_NUM_ELEMS);
+    EMU_REQUIRE_EQ_INT(cust_counter, 2);
+    EMU_REQUIRE_NOT_NULL(da);
+    EMU_EXPECT_EQ_UINT(da_length(da), RESIZE_NUM_ELEMS);
+    EMU_EXPECT_GE_UINT(da_capacity(da), RESIZE_NUM_ELEMS);
+    for (size_t i = 0; i < INITIAL_NUM_ELEMS; ++i)
+    {
+        EMU_EXPECT_EQ_INT(da[i], (int)i);
+    }
+
+    da_free(da);
+    EMU_REQUIRE_EQ_INT(cust_counter, 3);
     EMU_END_TEST();
 }
 
@@ -582,6 +674,7 @@ EMU_GROUP(darray_functions)
     EMU_ADD(darray_alloc_and_free_functions);
     EMU_ADD(da_resize);
     EMU_ADD(da_resize_exact);
+    EMU_ADD(da_resize_with_custom_memory_management);
     EMU_ADD(da_reserve);
     EMU_ADD(da_push);
     EMU_ADD(da_pop);

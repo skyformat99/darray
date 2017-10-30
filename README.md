@@ -7,6 +7,8 @@
     + [Creation and Deletion](#creation-and-deletion)
         + [da_alloc](#da_alloc)
         + [da_alloc_exact](#da_alloc_exact)
+        + [da_alloc_custom](#da_alloc_custom)
+        + [da_alloc_exact_custom](#da_alloc_exact_custom)
         + [da_free](#da_free)
     + [Resizing](#resizing)
         + [da_resize](#da_resize)
@@ -94,6 +96,24 @@ Returns a pointer to a new darray on success. `NULL` on allocation failure.
 void* da_alloc_exact(size_t nelem, size_t size);
 ```
 This version of `da_alloc` is useful for fixed-size arrays and/or environments with tight memory constraints.
+
+#### da_alloc_custom
+Allocate a darray of `nelem` elements each of size `size` using custom memory management functions. All memory allocation, reallocation, and freeing will be handled using the provided memory management functions for this darray.
+
+Returns a pointer to a new darray on success. `NULL` on allocation failure.
+```C
+void* da_alloc_custom(struct da_mem_funcs mem_funcs, size_t nelem, size_t size);
+```
+See `struct da_mem_funcs` in `darray.h` for the definition of `struct da_mem_funcs`.
+
+#### ad_alloc_exact_custom
+Allocate a darray of `nelem` elements each of size `size` using custom memory management functions. The capacity of the darray will be be exactly `nelem`. All memory allocation, reallocation, and freeing will be handled using the provided memory management functions for this darray.
+
+Returns a pointer to a new darray on success. `NULL` on allocation failure.
+```C
+void* da_alloc_exact_custom(struct da_mem_funcs mem_funcs, size_t nelem, size_t size)
+```
+See `struct da_mem_funcs` in `darray.h` for the definition of `struct da_mem_funcs`.
 
 #### da_free
 Free a darray.

@@ -48,7 +48,7 @@
  *          element of the array.
  */
 
-//////////////////////////// CORE DARRAY FUNCTIONS /////////////////////////////
+///////////////////////////////// DARRAY CORE //////////////////////////////////
  /**@macro
  * @brief Type of a darray that contains elements of `type`. This should be
  *  used for function parameters/return values that explicitly require a darray,
@@ -57,6 +57,25 @@
  * @param type : Type of the contained element.
  */
 #define darray(type) type*
+
+/**@struct
+ * @brief Struct used for constructing darrays who's memory is managed by
+ *  custom functions.
+ *
+ * @member alloc_f : malloc compatable allocation function. Must return NULL on
+ *  allocation failure.
+ * @member realloc_f : realloc compatable allocation function. Must return NULL
+ *  on allocation failure.
+ * @member free : free compatable function.
+ */
+struct da_mem_funcs
+{
+    void* (*alloc_f)(size_t size);
+    void* (*realloc_f)(void* ptr, size_t size);
+    void (*free_f)(void* ptr);
+};
+#define DA_DEFAULT_MEM_FUNCS \
+    (struct da_mem_funcs){.alloc_f=malloc, .realloc_f=realloc, .free_f=free}
 
 /**@function
  * @brief Allocate a darray of `nelem` elements each of size `size`.
@@ -78,6 +97,36 @@ void* da_alloc(size_t nelem, size_t size) DA_WARN_UNUSED_RESULT;
  * @return Pointer to a new darray on success. `NULL` on allocation failure.
  */
 void* da_alloc_exact(size_t nelem, size_t size) DA_WARN_UNUSED_RESULT;
+
+/**@function
+ * @brief Allocate a darray of `nelem` elements each of size `size` using custom
+ *  memory management functions. All memory allocation, reallocation, and
+ *  freeing will be handled using the provided memory management functions for
+ *  this darray.
+ *
+ * @param mem_funcs : Memory management functions.
+ * @param nelem : Initial number of elements in the darray.
+ * @param size : `sizeof` each element.
+ *
+ * @return Pointer to a new darray on success. `NULL` on allocation failure.
+ */
+void* da_alloc_custom(struct da_mem_funcs mem_funcs, size_t nelem, size_t size)
+    DA_WARN_UNUSED_RESULT;
+
+/**@function
+ * @brief Allocate a darray of `nelem` elements each of size `size` using custom
+ *  memory management functions. The capacity of the darray will be be exactly
+ *  `nelem`. All memory allocation, reallocation, and freeing will be handled
+ *  using the provided memory management functions for this darray.
+ *
+ * @param mem_funcs : Memory management functions.
+ * @param nelem : Initial number of elements in the darray.
+ * @param size : `sizeof` each element.
+ *
+ * @return Pointer to a new darray on success. `NULL` on allocation failure.
+ */
+void* da_alloc_exact_custom(struct da_mem_funcs mem_funcs, size_t nelem,
+    size_t size) DA_WARN_UNUSED_RESULT;
 
 /**@function
  * @brief Free a darray.
@@ -597,6 +646,7 @@ darray(char) dstr_trim(darray(char) dstr) DA_WARN_UNUSED_RESULT;
 struct _darray
 {
     size_t _elemsz, _length, _capacity;
+    struct da_mem_funcs _mem_funcs;
     alignas(alignof(max_align_t)) char _data[];
 };
 
