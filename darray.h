@@ -74,6 +74,7 @@ struct da_mem_funcs
     void* (*realloc_f)(void* ptr, size_t size);
     void (*free_f)(void* ptr);
 };
+
 #define DA_DEFAULT_MEM_FUNCS \
     (struct da_mem_funcs){.alloc_f=malloc, .realloc_f=realloc, .free_f=free}
 
