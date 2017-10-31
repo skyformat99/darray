@@ -106,7 +106,7 @@ void* da_alloc_custom(struct da_mem_funcs mem_funcs, size_t nelem, size_t size);
 ```
 See `struct da_mem_funcs` in `darray.h` for the definition of `struct da_mem_funcs`.
 
-#### ad_alloc_exact_custom
+#### da_alloc_exact_custom
 Allocate a darray of `nelem` elements each of size `size` using custom memory management functions. The capacity of the darray will be be exactly `nelem`. All memory allocation, reallocation, and freeing will be handled using the provided memory management functions for this darray.
 
 Returns a pointer to a new darray on success. `NULL` on allocation failure.
