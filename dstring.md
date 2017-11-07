@@ -65,7 +65,7 @@ darray(char) dstr_alloc_cstr(const char* src);
 ```
 
 #### dstr_alloc_dstr
-Allocate a dstring as a copy of dstring `src`. Faster than `dstr_alloc_cstr` when copying a dstring.
+Allocate a dstring as a copy of dstring `src`. May be faster than `dstr_alloc_cstr` when copying a large dstring.
 
 Returns a pointer to a new dstring on success. `NULL` on allocation failure.
 ```C
@@ -87,7 +87,7 @@ Returns a pointer to a new dstring on success. `NULL` on allocation failure.
 ```C
 darray(char) dstr_alloc_empty_custom(struct da_mem_funcs mem_funcs);
 ```
-See `struct da_mem_funcs` in `darray.h` for the definition of `struct da_mem_funcs`.
+See `darray.h` for the definition of `struct da_mem_funcs`.
 
 #### dstr_alloc_cstr_custom
 Allocate a dstring as copy of cstring `src`. `src` may also be a dstring. All memory allocation, reallocation, and freeing will be handled using the provided memory management functions for this dstring.
@@ -96,16 +96,16 @@ Returns a pointer to a new dstring on success. `NULL` on allocation failure.
 ```C
 darray(char) dstr_alloc_cstr_custom(struct da_mem_funcs mem_funcs, const char* src);
 ```
-See `struct da_mem_funcs` in `darray.h` for the definition of `struct da_mem_funcs`.
+See `darray.h` for the definition of `struct da_mem_funcs`.
 
 #### dstr_alloc_dstr_custom
-Allocate a dstring as a copy of dstring `src`. Faster than `dstr_alloc_cstr_custom` when copying a dstring. All memory allocation, reallocation, and freeing will be handled using the provided memory management functions for this dstring.
+Allocate a dstring as a copy of dstring `src`. May be faster than `dstr_alloc_cstr_custom` when copying a large dstring. All memory allocation, reallocation, and freeing will be handled using the provided memory management functions for this dstring.
 
 Returns a pointer to a new dstring on success. `NULL` on allocation failure.
 ```C
 darray(char) dstr_alloc_dstr_custom(struct da_mem_funcs mem_funcs, const darray(char) src);
 ```
-See `struct da_mem_funcs` in `darray.h` for the definition of `struct da_mem_funcs`.
+See `darray.h` for the definition of `struct da_mem_funcs`.
 
 #### dstr_alloc_format_custom
 Allocate a dstring using `sprintf` style formatting. All memory allocation, reallocation, and freeing will be handled using the provided memory management functions for this dstring.
@@ -114,7 +114,7 @@ Returns a pointer to a new dstring on success. `NULL` on allocation failure.
 ```C
 darray(char) dstr_alloc_format_custom(struct da_mem_funcs mem_funcs, const char* format, ...);
 ```
-See `struct da_mem_funcs` in `darray.h` for the definition of `struct da_mem_funcs`.
+See `darray.h` for the definition of `struct da_mem_funcs`.
 
 #### dstr_free
 Free a dstring. Equivalent to calling `da_free` on `dstr`.
