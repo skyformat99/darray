@@ -413,6 +413,59 @@ darray(char) dstr_alloc_dstr(const darray(char) src) DA_WARN_UNUSED_RESULT;
 darray(char) dstr_alloc_format(const char* format, ...) DA_WARN_UNUSED_RESULT;
 
 /**@function
+ * @brief Allocate a dstring as the empty string `""`. All memory allocation,
+ *  reallocation, and freeing will be handled using the provided memory
+ *  management functions for this dstring.
+ *
+ * @param mem_funcs : Memory management functions.
+ *
+ * @return Pointer to a new dstring on success. `NULL` on allocation failure.
+ */
+darray(char) dstr_alloc_empty_custom(struct da_mem_funcs mem_funcs)
+    DA_WARN_UNUSED_RESULT;
+
+/**@function
+ * @brief Allocate a dstring as copy of cstring `src`. `src` may also be a
+ * dstring. All memory allocation, reallocation, and freeing will be handled
+ * using the provided memory management functions for this dstring.
+ *
+ * @param mem_funcs : Memory management functions.
+ * @param src : string to copy.
+ *
+ * @return Pointer to a new dstring on success. `NULL` on allocation failure.
+ */
+darray(char) dstr_alloc_cstr_custom(struct da_mem_funcs mem_funcs,
+    const char* src) DA_WARN_UNUSED_RESULT;
+
+/**@function
+ * @brief Allocate a dstring as a copy of dstring `src`. Faster than
+ *  `dstr_alloc_cstr_custom` when copying a dstring. All memory allocation,
+ *  reallocation, and freeing will be handled using the provided memory
+ *  management functions for this dstring.
+ *
+ * @param mem_funcs : Memory management functions.
+ * @param src : dstring to copy.
+ *
+ * @return Pointer to a new dstring on success. `NULL` on allocation failure.
+ */
+darray(char) dstr_alloc_dstr_custom(struct da_mem_funcs mem_funcs,
+    const darray(char) src) DA_WARN_UNUSED_RESULT;
+
+/**@function
+ * @brief Allocate a dstring using `sprintf` style formatting. All memory
+ *  allocation, reallocation, and freeing will be handled using the provided
+ *  memory management functions for this dstring.
+ *
+ * @param mem_funcs : Memory management functions.
+ * @param format : `sprintf` style format string.
+ * @param ... : va arg list for the format string.
+ *
+ * @return Pointer to a new dstring on success. `NULL` on allocation failure.
+ */
+darray(char) dstr_alloc_format_custom(struct da_mem_funcs mem_funcs,
+    const char* format, ...) DA_WARN_UNUSED_RESULT;
+
+/**@function
  * @brief Free a dstring. Equivalent to calling `da_free` on `dstr`.
  *
  * @param dstr : dstring to free.
@@ -445,7 +498,6 @@ darray(char) dstr_reassign_empty(darray(char) allocated_dstr)
  */
 darray(char) dstr_reassign_cstr(darray(char) allocated_dstr, const char* src)
     DA_WARN_UNUSED_RESULT;
-
 
 /**@function
  * @brief Reassign the contents of an allocated dstring to that of a dstring,

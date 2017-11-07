@@ -210,13 +210,64 @@ darray(char) dstr_alloc_format(const char* format, ...)
 {
     va_list args;
     va_start(args, format);
-    
+
     va_list copy;
     va_copy(copy, args);
     size_t size = vsnprintf(NULL, 0, format, copy) + 1 /* +1 for '\0' */;
     va_end(copy);
 
     char* dstr = da_alloc(size, sizeof(char));
+    if (dstr == NULL)
+        return NULL;
+    vsprintf(dstr, format, args);
+
+    va_end(args);
+    return dstr;
+}
+
+darray(char) dstr_alloc_empty_custom(struct da_mem_funcs mem_funcs)
+{
+    char* dstr = da_alloc_custom(mem_funcs, 1, sizeof(char));
+    if (dstr == NULL)
+        return NULL;
+    dstr[0] = '\0';
+    return dstr;
+}
+
+darray(char) dstr_alloc_cstr_custom(struct da_mem_funcs mem_funcs,
+    const char* src)
+{
+    size_t src_len_with_nullterm = strlen(src)+1;
+    char* dstr = da_alloc_custom(mem_funcs, src_len_with_nullterm, sizeof(char));
+    if (dstr == NULL)
+        return NULL;
+    memcpy(dstr, src, src_len_with_nullterm);
+    return dstr;
+}
+
+darray(char) dstr_alloc_dstr_custom(struct da_mem_funcs mem_funcs,
+    const darray(char) src)
+{
+    size_t src_len_with_nullterm = da_length(src);
+    char* dstr = da_alloc_custom(mem_funcs, src_len_with_nullterm, sizeof(char));
+    if (dstr == NULL)
+        return NULL;
+    memcpy(dstr, src, src_len_with_nullterm);
+    return dstr;
+}
+
+darray(char) dstr_alloc_format_custom(struct da_mem_funcs mem_funcs,
+    const char* format, ...)
+{
+    va_list args;
+    va_start(args, format);
+
+    va_list copy;
+    va_copy(copy, args);
+    size_t size = vsnprintf(NULL, 0, format, copy) + 1 /* +1 for '\0' */;
+    va_end(copy);
+
+    char* dstr = da_alloc_custom(mem_funcs, size, sizeof(char));
     if (dstr == NULL)
         return NULL;
     vsprintf(dstr, format, args);
