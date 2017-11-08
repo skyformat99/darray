@@ -374,7 +374,7 @@ void* da_concat(void* dest, const void* src, size_t nelem)
 #define da_foreach(/* ELEM_TYPE* */darr, itername)                             \
                                                      _da_foreach(darr, itername)
 
-////////////////////////////// DSTRING FUNCTIONS ///////////////////////////////
+/////////////////////////////////// DSTRING ////////////////////////////////////
 /**@function
  * @brief Allocate a dstring as the empty string `""`.
  *
@@ -517,6 +517,8 @@ darray(char) dstr_reassign_dstr(darray(char) allocated_dstr,
  * @brief Reassign the contents of an allocated dstring using `sprintf` style
  *  formatting, reallocating memory only when neccesary.
  *
+ * @param allocated_dstr : Dstring containing memory allocated by one of the
+ *  dstr_alloc functions.
  * @param format : `sprintf` style format string.
  * @param ... : va arg list for the format string.
  *
@@ -683,6 +685,36 @@ void dstr_transform_lower(darray(char) dstr);
  * @param dstr : Target dstring to transform.
  */
 void dstr_transform_upper(darray(char) dstr);
+
+/**@function
+ * @brief Read an entire line from `stream` and store it in `dstr`. Equivalent
+ *  to calling `dstr_getdelim` with `delim == '\n'`.
+ *
+ * @param allocated_dstr : Dstring containing memory allocated by one of the
+ *  dstr_alloc functions.
+ * @param stream : Input stream opened for reading.
+ *
+ * @return The new location of `allocated_dstr` after function completion.`NULL`
+ *  on failure (including end-of-file condition).
+ */
+darray(char) dstr_getline(darray(char) allocated_dstr, FILE* stream)
+    DA_WARN_UNUSED_RESULT;
+
+/**@function
+ * @brief Read characters from `stream` up to but not including `delim` and
+ *  store them in `dstr`.
+ *
+ * @param allocated_dstr : Dstring containing memory allocated by one of the
+ *  dstr_alloc functions.
+ * @param delim : Character denoting end-of-read. If delim is set to EOF,
+ *  `dstr_getdelim` will read all characters from a stream.
+ * @param stream : Input stream opened for reading.
+ *
+ * @return The new location of `allocated_dstr` after function completion.`NULL`
+ *  on failure (including end-of-file condition if `delim != EOF`).
+ */
+darray(char) dstr_getdelim(darray(char) allocated_dstr, int delim, FILE* stream)
+    DA_WARN_UNUSED_RESULT;
 
 /**@function
  * @brief Trims leading and trailing whitespace from `dstr`.

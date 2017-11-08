@@ -37,6 +37,8 @@
         + [dstr_transform_lower](#dstr_transform_lower)
         + [dstr_transform_upper](#dstr_transform_upper)
     + [Misc.](#misc)
+        + [dstr_getline](#dstr_getline)
+        + [dstr_getdelim](#dstr_getdelim)
         + [dstr_trim](#dstr_trim)
 
 ## Introduction
@@ -278,6 +280,22 @@ void dstr_transform_upper(darray(char) dstr);
 ----
 
 ### Misc.
+
+#### dstr_getdelim
+Read an entire line from `stream` and store it in `dstr`. Equivalent to calling `dstr_getdelim` with `delim == '\n'`.
+
+Returns the new location of `allocated_dstr` after function completion.`NULL` on failure (including end-of-file condition).
+```C
+darray(char) dstr_getline(darray(char) allocated_dstr, FILE* stream);
+```
+
+#### dstr_getdelim
+Read characters from `stream` up to but not including `delim` and `dstr`.
+
+Returns the new location of `allocated_dstr` after function completion.`NULL` on failure (including end-of-file condition if `delim != EOF`).
+```C
+darray(char) dstr_getdelim(darray(char) allocated_dstr, int delim, FILE* stream);
+```
 
 #### dstr_trim
 Trims leading and trailing whitespace from `dstr`.

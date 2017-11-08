@@ -485,6 +485,28 @@ void dstr_transform_upper(darray(char) dstr)
         *c = toupper(*c);
 }
 
+darray(char) dstr_getline(darray(char) allocated_dstr, FILE* stream)
+{
+    return dstr_getdelim(allocated_dstr, '\n', stream);
+}
+
+darray(char) dstr_getdelim(darray(char) allocated_dstr, int delim, FILE* stream)
+{
+    allocated_dstr = dstr_reassign_empty(allocated_dstr);
+    if (allocated_dstr == NULL)
+        return NULL;
+    int c;
+    while ((c = fgetc(stream)) != delim)
+    {
+        if (delim != EOF && c == EOF)
+            return NULL;
+        allocated_dstr = dstr_concat_char(allocated_dstr, c);
+        if (allocated_dstr == NULL)
+            return NULL;
+    }
+    return allocated_dstr;
+}
+
 darray(char) dstr_trim(darray(char) dstr)
 {
     size_t n;

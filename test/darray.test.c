@@ -10,6 +10,7 @@
 #define EMPTY_STR ""
 #define TEST_STR0 "foobar"
 #define TEST_STR1 "Darray is the best library!"
+#define TEST_FILE "./resources/testfile"
 
 int cust_counter;
 void* custom_malloc(size_t size)
@@ -1212,6 +1213,54 @@ EMU_GROUP(dstr_transform_functions)
     EMU_END_GROUP();
 }
 
+EMU_TEST(dstr_getline)
+{
+    FILE* fp = fopen(TEST_FILE, "r");
+    EMU_REQUIRE_NOT_NULL(fp);
+    char* dstr = dstr_alloc_empty();
+
+    dstr = dstr_getline(dstr, fp);
+    EMU_REQUIRE_NOT_NULL(dstr);
+    EMU_REQUIRE_STREQ(dstr, "first line");
+
+    dstr = dstr_getline(dstr, fp);
+    EMU_REQUIRE_NOT_NULL(dstr);
+    EMU_REQUIRE_STREQ(dstr, "another line");
+
+    // No '\n' means dstr_getline should hit EOF and error out.
+    dstr = dstr_getline(dstr, fp);
+    EMU_EXPECT_NULL(dstr);
+
+    fclose(fp);
+    EMU_END_TEST();
+}
+
+EMU_TEST(dstr_getdelim)
+{
+    FILE* fp = fopen(TEST_FILE, "r");
+    EMU_REQUIRE_NOT_NULL(fp);
+    char* dstr = dstr_alloc_empty();
+
+    dstr = dstr_getdelim(dstr, '\n', fp);
+    EMU_REQUIRE_NOT_NULL(dstr);
+    EMU_REQUIRE_STREQ(dstr, "first line");
+
+    dstr = dstr_getdelim(dstr, ' ', fp);
+    EMU_REQUIRE_NOT_NULL(dstr);
+    EMU_REQUIRE_STREQ(dstr, "another");
+
+    dstr = dstr_getdelim(dstr, '\n', fp);
+    EMU_REQUIRE_NOT_NULL(dstr);
+    EMU_REQUIRE_STREQ(dstr, "line");
+
+    dstr = dstr_getdelim(dstr, EOF, fp);
+    EMU_REQUIRE_NOT_NULL(dstr);
+    EMU_REQUIRE_STREQ(dstr, "the last line has no newline character");
+
+    fclose(fp);
+    EMU_END_TEST();
+}
+
 EMU_TEST(dstr_trim)
 {
     char* dstr = dstr_alloc_cstr(" \t\n\v\f\rfoo \t\n\v\f\r");
@@ -1230,6 +1279,8 @@ EMU_GROUP(dstring_functions)
     EMU_ADD(dstr_find_functions);
     EMU_ADD(dstr_replace_functions);
     EMU_ADD(dstr_transform_functions);
+    EMU_ADD(dstr_getline);
+    EMU_ADD(dstr_getdelim);
     EMU_ADD(dstr_trim);
     EMU_END_GROUP();
 }
