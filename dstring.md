@@ -281,7 +281,7 @@ void dstr_transform_upper(darray(char) dstr);
 
 ### Misc.
 
-#### dstr_getdelim
+#### dstr_getline
 Read an entire line from `stream` and store it in `dstr`. Equivalent to calling `dstr_getdelim` with `delim == '\n'`.
 
 Returns the new location of `allocated_dstr` after function completion.`NULL` on failure (including end-of-file condition).
