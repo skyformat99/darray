@@ -1,5 +1,5 @@
 CC = gcc
-override CFLAGS += -Wall -Wextra -std=c11
+override CFLAGS += -Wall -Wextra -std=c11 -O3
 CPPC = g++
 CPPFLAGS = -Wall -Wextra -std=c++11
 
@@ -18,12 +18,12 @@ default: release
 debug: CFLAGS += -g -DDEBUG
 debug: build unit_tests
 
-release: CFLAGS += -Werror -O3 -DNDEBUG
+release: CFLAGS += -Werror -DNDEBUG
 release: build unit_tests
 
 build: clean
 	mkdir -p $(BUILD_DIR)
-	gcc $(CFLAGS) -c -o $(BUILD_DIR)/$(DARRAY_OBJ) darray.c $(OPTIMIZATION_LEVEL)
+	gcc $(CFLAGS) -c -o $(BUILD_DIR)/$(DARRAY_OBJ) darray.c
 	ar rcs $(BUILD_DIR)/$(DARRAY_LIB_OUT) $(BUILD_DIR)/$(DARRAY_OBJ)
 
 install: build
